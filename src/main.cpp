@@ -323,7 +323,7 @@ int main() {
             //</process sensor fusion>
 
             //<make decision and implement>
-            cout <<" current=" << lane<<", to_colse="<<too_close << ", left_allowed="<<left_allowed<<", right_allowed="<<right_allowed << endl;
+            //cout <<" current=" << lane<<", to_colse="<<too_close << ", left_allowed="<<left_allowed<<", right_allowed="<<right_allowed << endl;
             if (too_close){
               if(left_allowed){
                 lane -= 1;
