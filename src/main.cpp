@@ -261,6 +261,15 @@ int main() {
             }
 
             bool too_close = false;
+            bool left_allowed = true;
+            if (lane == 0){
+              left_allowed = false;
+            }
+            bool right_allowed = true;
+            if (lane == 2){
+              right_allowed = false;
+            }
+            double myD = 0.0;
 
             //find ref_v to use
             for (int i = 0; i< sensor_fusion.size();i++){
@@ -282,17 +291,39 @@ int main() {
                   too_close = true;
                 }
               }
+
+              // chech left lane
+              if (d > (2 + 4 * (lane - 1) - 2) && (d < (2 + 4 * (lane - 1) + 2))) {
+
+                if (left_allowed && (check_car_s > car_s) && ((check_car_s - car_s) < 30) && (car_speed > check_speed)){
+                  left_allowed = false;
+                }
+              }
+
+              // chech right lane
+              if (d > (2 + 4 * (lane + 1) - 2) && (d < (2 + 4 * (lane + 1) + 2))){
+
+                if (right_allowed && (check_car_s > car_s) && ((check_car_s - car_s) < 30) && (car_speed > check_speed)){
+                  right_allowed = false;
+                }
+              }
+
             }
 
             //</process sensor fusion>
 
             //<make decision and implement>
+            cout <<"d="<<myD<< ", current = " << lane<<", to_colse="<<too_close << ", left_allowed="<<left_allowed<<", right_allowed="<<right_allowed << endl;
             if (too_close){
-              //blindly change to left
-              lane = 0;
-              //ref_vel -= .224;
+              if(left_allowed){
+                lane -= 1;
+              }else if (right_allowed){
+                lane += 1;
+              } else{
+                ref_vel -= 0.244;
+              }
             }else if (ref_vel < 49.5){
-              ref_vel += .224;
+              ref_vel += 0.224;
             }
             //</make decision and implement>
 
