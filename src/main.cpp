@@ -294,18 +294,28 @@ int main() {
 
               // chech left lane
               if (d > (2 + 4 * (lane - 1) - 2) && (d < (2 + 4 * (lane - 1) + 2))) {
-
-                if (left_allowed && (check_car_s > car_s) && ((check_car_s - car_s) < 30) && (car_speed > check_speed)){
+                if ((check_car_s > car_s) && ((check_car_s - car_s) < 30) && (car_speed > check_speed)){
+                  //car in front
                   left_allowed = false;
                 }
+                if ((check_car_s <= car_s) && (( check_car_s - car_s) > -8)){
+                  //car in back
+                  left_allowed = false;
+                }
+
               }
 
               // chech right lane
               if (d > (2 + 4 * (lane + 1) - 2) && (d < (2 + 4 * (lane + 1) + 2))){
-
-                if (right_allowed && (check_car_s > car_s) && ((check_car_s - car_s) < 30) && (car_speed > check_speed)){
+                if ((check_car_s > car_s) && ((check_car_s - car_s) < 30) && (car_speed > check_speed)){
+                  //car in front
                   right_allowed = false;
                 }
+                if ((check_car_s <= car_s) && (( check_car_s - car_s) > -8)){
+                  //car in back
+                  right_allowed = false;
+                }
+
               }
 
             }
@@ -313,7 +323,7 @@ int main() {
             //</process sensor fusion>
 
             //<make decision and implement>
-            cout <<"d="<<myD<< ", current = " << lane<<", to_colse="<<too_close << ", left_allowed="<<left_allowed<<", right_allowed="<<right_allowed << endl;
+            cout <<" current=" << lane<<", to_colse="<<too_close << ", left_allowed="<<left_allowed<<", right_allowed="<<right_allowed << endl;
             if (too_close){
               if(left_allowed){
                 lane -= 1;
